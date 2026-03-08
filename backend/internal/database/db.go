@@ -39,6 +39,8 @@ func Migrate() error {
 	err := DB.AutoMigrate(
 		&models.User{},
 		&models.Meeting{},
+		&models.Group{},
+		&models.GroupMember{},
 	)
 
 	if err != nil {
