@@ -16,6 +16,7 @@ func SetupRoutes(
 	lobbyHandler *handlers.LobbyHandler,
 	lobbyWSHandler *handlers.LobbyWSHandler,
 	summarizerHandler *handlers.SummarizerHandler,
+	groupHandler *handlers.GroupHandler,
 	cfg *config.Config,
 ) {
 	api := app.Group("/api/v1")
@@ -25,4 +26,5 @@ func SetupRoutes(
 	setupMeetingRoutes(api, meetingHandler, summarizerHandler, cfg)
 	setupLiveKitRoutes(api, livekitHandler, cfg)
 	setupLobbyRoutes(app, api, lobbyHandler, lobbyWSHandler)
+	setupGroupRoutes(api, groupHandler, cfg)
 }

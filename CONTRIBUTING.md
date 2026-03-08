@@ -85,20 +85,39 @@ Read [./backend/migrations/README.md](./backend/migrations/README.md) for instru
 
 ---
 
-## 📝 Pull Request Guidelines
+## 🌿 Branching Strategy
 
-1. **Branch Naming**: Use descriptive names like `feat/add-screen-sharing` or `fix/audio-glitch`.
-2. **Quality**: Ensure your code follows Go and React best practices.
-3. **Documentation**: Update the README or create a new doc in `/docs` if you introduce new features or change infrastructure requirements.
-4. **Focused Changes**: Keep PRs small and focused on a single feature or bug fix.
+We follow a structured three-branch model to keep `main` always deployable:
+
+| Branch | Purpose |
+|---|---|
+| `main` | Production-ready code. Only receives merges from `dev` via release PRs. |
+| `dev` | Integration and testing branch. All feature work lands here first. |
+| `feature/*` | Short-lived branches cut from `dev` for a single feature or fix. |
 
 ---
 
-## ✅ Before Submitting
-- [ ] Code is formatted (`go fmt ./...` for backend).
+## 📝 Pull Request Guidelines
+
+### 1. Feature PR → `dev`
+
+Cut a branch from `dev` and open a PR back into `dev` when your feature is complete.
+
+**Branch naming:** Use descriptive names like `feat/group-management` or `fix/audio-glitch`.
+
+**Issue linking — use plain references only (`Related to`, `See`):**
+```
+feat: add group management migrations (009–012)
+
+Related to #9, #10.
+```
+
+**PR checklist before requesting review:**
+- [ ] Code is formatted (`go fmt ./...` for backend, `npm run lint` for frontend).
 - [ ] No linting errors.
-- [ ] Features are tested manually.
-- [ ] Documentation is updated if necessary.
+- [ ] Feature is tested manually.
+- [ ] Documentation updated if necessary (README, `/docs`).
+- [ ] Focused on a single feature or bug fix.
 
+---
 Thank you for contributing! 🎉
-
