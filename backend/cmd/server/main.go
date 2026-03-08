@@ -68,6 +68,7 @@ func main() {
 	chunkRepo := repositories.NewAudioChunkRepository(database.GetDB())
 	transcriptRepo := repositories.NewTranscriptRepository(database.GetDB())
 	groupRepo := repositories.NewGroupRepository(database.GetDB())
+	invitationRepo := repositories.NewInvitationRepository(database.GetDB())
 
 	// Initialize services
 	meetingService := services.NewMeetingService(meetingRepo)
@@ -76,6 +77,7 @@ func main() {
 	livekitService := services.NewLiveKitService(cfg)
 	openRouterService := services.NewOpenRouterService(cfg)
 	emailService := services.NewEmailService(cfg)
+	invitationService := services.NewInvitationService(invitationRepo, groupRepo, userService, emailService, cfg.Server.FrontendURL)
 
 	// Dependency chain: SummarizationService <- NormalizationService <- TranscriptionService <- SummarizerService
 	summarizationService := services.NewSummarizationService(sessionRepo, userService, openRouterService, emailService, cfg)
@@ -88,6 +90,7 @@ func main() {
 	authHandler := handlers.NewAuthHandler(userService, cfg)
 	meetingHandler := handlers.NewMeetingHandler(meetingService, cfg)
 	groupHandler := handlers.NewGroupHandler(groupService)
+	invitationHandler := handlers.NewInvitationHandler(invitationService)
 	livekitHandler := handlers.NewLiveKitHandler(livekitService, meetingService, userService, summarizerService, cfg)
 	lobbyHandler := handlers.NewLobbyHandler(livekitService, meetingService, userService, cfg)
 	lobbyWSHandler := handlers.NewLobbyWSHandler(livekitService, meetingService, userService, cfg)
@@ -105,7 +108,7 @@ func main() {
 	go summarizationWorker.Start()
 
 	// Setup routes
-	routes.SetupRoutes(app, userHandler, authHandler, meetingHandler, livekitHandler, lobbyHandler, lobbyWSHandler, summarizerHandler, groupHandler, cfg)
+	routes.SetupRoutes(app, userHandler, authHandler, meetingHandler, livekitHandler, lobbyHandler, lobbyWSHandler, summarizerHandler, groupHandler, invitationHandler, cfg)
 
 	// Health check route
 	app.Get("/api/v1/health", func(c *fiber.Ctx) error {
