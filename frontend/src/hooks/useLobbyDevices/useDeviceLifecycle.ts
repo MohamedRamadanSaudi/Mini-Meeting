@@ -15,6 +15,7 @@ export interface DeviceLifecycleReturn {
   listenerMode: boolean;
   handleAllowPermissions: () => void;
   handleDismissPrompt: () => void;
+  enableListenerMode: () => void;
 }
 
 /**
@@ -70,10 +71,16 @@ export function useDeviceLifecycle({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingReady]);
 
+  const enableListenerMode = () => {
+    setListenerMode(true);
+    enumerateDevices().catch(() => {});
+  };
+
   return {
     showPermissionPrompt,
     listenerMode,
     handleAllowPermissions,
     handleDismissPrompt,
+    enableListenerMode,
   };
 }

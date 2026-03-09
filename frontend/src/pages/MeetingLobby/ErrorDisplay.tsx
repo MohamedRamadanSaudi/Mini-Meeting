@@ -6,6 +6,7 @@ interface ErrorDisplayProps {
   onClearDeviceError: () => void;
   onRetryDeviceAccess: () => void;
   onClearError: () => void;
+  onEnableListenerMode: () => void;
 }
 
 export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
@@ -14,6 +15,7 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   onClearDeviceError,
   onRetryDeviceAccess,
   onClearError,
+  onEnableListenerMode,
 }) => {
   if (deviceError) {
     return (
@@ -27,7 +29,10 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
             // dialog appears on top of the modal, so the user keeps context.
             onRetryDeviceAccess();
           }}
-          onDismiss={onClearDeviceError}
+          onDismiss={() => {
+            onClearDeviceError();
+            onEnableListenerMode();
+          }}
         />
       </div>
     );

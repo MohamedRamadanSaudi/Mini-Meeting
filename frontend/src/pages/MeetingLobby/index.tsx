@@ -69,6 +69,7 @@ export const MeetingLobby: React.FC<MeetingLobbyProps> = ({
         deviceError={devices.deviceError}
         error={displayError}
         onClearDeviceError={devices.clearDeviceError}
+        onEnableListenerMode={devices.enableListenerMode}
         onRetryDeviceAccess={async () => {
           // Browsers require getUserMedia to be called synchronously within the
           // user gesture (click). Calling it here directly — before any async
