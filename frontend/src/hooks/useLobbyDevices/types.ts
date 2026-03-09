@@ -25,6 +25,7 @@ export interface LobbyDeviceState {
   handleDismissPrompt: () => void;
   clearError: () => void;
   clearDeviceError: () => void;
+  enableListenerMode: () => void;
   retryDeviceAccess: () => void;
   cleanup: () => void;
 }

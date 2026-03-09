@@ -89,6 +89,7 @@ export function useLobbyDevices(meetingReady: boolean): LobbyDeviceState {
     handleDismissPrompt: deviceLifecycle.handleDismissPrompt,
     clearError: mediaStream.clearError,
     clearDeviceError: mediaStream.clearDeviceError,
+    enableListenerMode: deviceLifecycle.enableListenerMode,
     retryDeviceAccess: setupDevicesAndEnumerate,
     cleanup: useCallback(() => {
       mediaStream.stopStream();
