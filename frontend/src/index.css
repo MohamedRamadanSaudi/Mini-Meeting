@@ -493,20 +493,24 @@
   }
 
   /* Scrollbar */
-  .lk-chat-messages::-webkit-scrollbar {
+  .lk-chat-messages::-webkit-scrollbar,
+  .participants-list::-webkit-scrollbar {
     width: 6px !important;
   }
 
-  .lk-chat-messages::-webkit-scrollbar-track {
+  .lk-chat-messages::-webkit-scrollbar-track,
+  .participants-list::-webkit-scrollbar-track {
     background: transparent !important;
   }
 
-  .lk-chat-messages::-webkit-scrollbar-thumb {
+  .lk-chat-messages::-webkit-scrollbar-thumb,
+  .participants-list::-webkit-scrollbar-thumb {
     background: var(--lk-border-color) !important;
     border-radius: 6px !important;
   }
 
-  .lk-chat-messages::-webkit-scrollbar-thumb:hover {
+  .lk-chat-messages::-webkit-scrollbar-thumb:hover,
+  .participants-list::-webkit-scrollbar-thumb:hover {
     background: var(--lk-fg2) !important;
   }
 
