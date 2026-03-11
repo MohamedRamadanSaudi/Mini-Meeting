@@ -63,18 +63,6 @@ export const AdminControls: React.FC<AdminControlsProps> = ({
       className="flex flex-col flex-1 min-h-0 overflow-hidden"
       style={{ background: "var(--lk-bg2)" }}
     >
-      <div
-        className="p-4 shrink-0"
-        style={{ borderBottom: "1px solid var(--lk-border-color)" }}
-      >
-        <EndMeetingButton
-          onEndMeeting={handleEndMeeting}
-          isEndingMeeting={isEndingMeeting}
-          showConfirm={showEndConfirm}
-          onShowConfirm={setShowEndConfirm}
-        />
-      </div>
-
       <ParticipantsList
         participants={
           participants as Array<{
@@ -87,6 +75,18 @@ export const AdminControls: React.FC<AdminControlsProps> = ({
         onKick={handleKickParticipant}
         onMuteTrack={handleMuteTrack}
       />
+
+      <div
+        className="p-4 shrink-0"
+        style={{ borderTop: "1px solid var(--lk-border-color)" }}
+      >
+        <EndMeetingButton
+          onEndMeeting={handleEndMeeting}
+          isEndingMeeting={isEndingMeeting}
+          showConfirm={showEndConfirm}
+          onShowConfirm={setShowEndConfirm}
+        />
+      </div>
     </div>
   );
 };
