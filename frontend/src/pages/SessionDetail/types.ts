@@ -25,6 +25,7 @@ export interface ContentSectionProps {
   content: string | null;
   copyLabel: string;
   icon: React.ReactNode;
+  variant?: "summary" | "transcript";
 }
 
 export interface SessionHeaderProps {

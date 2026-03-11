@@ -7,6 +7,7 @@ import type { ControlBarSectionProps } from "./types";
 export const ControlBarSection: React.FC<ControlBarSectionProps> = ({
   meetingId,
   isAdmin,
+  meetingCode,
   isChatOpen,
   unreadCount,
   onToggleChat,
@@ -26,7 +27,7 @@ export const ControlBarSection: React.FC<ControlBarSectionProps> = ({
 
       {/* Media Controls */}
       <div className="flex-1 flex justify-center order-2 min-w-0">
-        <CustomControlBar />
+        <CustomControlBar isAdmin={isAdmin} meetingCode={meetingCode} />
       </div>
 
       {/* Chat Button */}

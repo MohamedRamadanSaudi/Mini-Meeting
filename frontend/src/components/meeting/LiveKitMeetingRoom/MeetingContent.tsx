@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import {
   RoomAudioRenderer,
   useTracks,
@@ -6,9 +6,10 @@ import {
 } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import { MeetingHeader } from "../MeetingHeader";
-import { LobbyRequests } from "../LobbyRequests";
 import { VideoSection } from "./VideoSection";
 import { useMeetingChat } from "./useMeetingChat";
+import { useLobbyWebSocket } from "../LobbyRequests/useLobbyWebSocket";
+import { useNotificationSound } from "../LobbyRequests/useNotificationSound";
 import type { MeetingContentProps } from "./types";
 
 export const MeetingContent: React.FC<MeetingContentProps> = ({
@@ -21,6 +22,37 @@ export const MeetingContent: React.FC<MeetingContentProps> = ({
 }) => {
   const participants = useParticipants();
   const { isChatOpen, setIsChatOpen, unreadCount } = useMeetingChat();
+  const [respondingTo, setRespondingTo] = useState<Set<string>>(new Set());
+  const playNotificationSound = useNotificationSound();
+  const handleNewRequest = useCallback(() => {
+    playNotificationSound();
+  }, [playNotificationSound]);
+  const {
+    requests: lobbyRequests,
+    setRequests: setLobbyRequests,
+    sendJsonMessage,
+  } = useLobbyWebSocket(meetingCode, isAdmin, handleNewRequest);
+  const pendingLobbyCount = lobbyRequests.length;
+
+  const handleLobbyRespond = (
+    requestId: string,
+    action: "approve" | "reject",
+  ) => {
+    setRespondingTo((prev) => new Set(prev).add(requestId));
+    sendJsonMessage({ type: "respond", request_id: requestId, action });
+    setLobbyRequests((prev) => prev.filter((r) => r.request_id !== requestId));
+    setRespondingTo((prev) => {
+      const next = new Set(prev);
+      next.delete(requestId);
+      return next;
+    });
+  };
+
+  const handleLobbyAdmitAll = () => {
+    for (const req of lobbyRequests) {
+      handleLobbyRespond(req.request_id, "approve");
+    }
+  };
 
   const tracks = useTracks(
     [
@@ -69,6 +101,7 @@ export const MeetingContent: React.FC<MeetingContentProps> = ({
           isAdminPanelOpen={isAdminPanelOpen}
           participants={participants}
           onAdminToggle={toggleAdmin}
+          pendingLobbyCount={pendingLobbyCount}
         />
         <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
           <VideoSection
@@ -85,10 +118,13 @@ export const MeetingContent: React.FC<MeetingContentProps> = ({
             onChatClose={() => setIsChatOpen(false)}
             onAdminClose={() => setIsAdminPanelOpen(false)}
             onEndMeeting={() => onDisconnect?.()}
+            lobbyRequests={lobbyRequests}
+            lobbyRespondingTo={respondingTo}
+            onLobbyRespond={handleLobbyRespond}
+            onLobbyAdmitAll={handleLobbyAdmitAll}
           />
         </div>
       </div>
-      <LobbyRequests meetingCode={meetingCode} isAdmin={isAdmin} />
     </>
   );
 };

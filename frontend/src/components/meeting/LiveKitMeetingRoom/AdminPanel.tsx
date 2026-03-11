@@ -1,5 +1,6 @@
 import { SidebarPanel } from "../SidebarPanel";
 import { AdminControls } from "../AdminControls";
+import type { LobbyPendingEntry } from "../../../services/api/lobby.service";
 
 interface AdminPanelProps {
   meetingCode: string;
@@ -7,6 +8,10 @@ interface AdminPanelProps {
   isOpen: boolean;
   onClose: () => void;
   onEndMeeting: () => void;
+  lobbyRequests: LobbyPendingEntry[];
+  lobbyRespondingTo: Set<string>;
+  onLobbyRespond: (requestId: string, action: "approve" | "reject") => void;
+  onLobbyAdmitAll: () => void;
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({
@@ -15,26 +20,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   isOpen,
   onClose,
   onEndMeeting,
+  lobbyRequests,
+  lobbyRespondingTo,
+  onLobbyRespond,
+  onLobbyAdmitAll,
 }) => {
   if (!isOpen) return null;
 
   return (
-    <SidebarPanel title="Admin Controls" onClose={onClose}>
-      <div
-        style={{
-          flex: 1,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 0,
-        }}
-      >
-        <AdminControls
-          meetingCode={meetingCode}
-          isAdmin={isAdmin}
-          onEndMeeting={onEndMeeting}
-        />
-      </div>
+    <SidebarPanel title="People" onClose={onClose}>
+      <AdminControls
+        meetingCode={meetingCode}
+        isAdmin={isAdmin}
+        onEndMeeting={onEndMeeting}
+        lobbyRequests={lobbyRequests}
+        lobbyRespondingTo={lobbyRespondingTo}
+        onLobbyRespond={onLobbyRespond}
+        onLobbyAdmitAll={onLobbyAdmitAll}
+      />
     </SidebarPanel>
   );
 };

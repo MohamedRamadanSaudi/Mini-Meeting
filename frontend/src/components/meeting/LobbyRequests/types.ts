@@ -3,6 +3,7 @@ import type { LobbyPendingEntry } from "../../../services/api/lobby.service";
 export interface LobbyRequestsProps {
   meetingCode: string;
   isAdmin: boolean;
+  onPendingCountChange?: (count: number) => void;
 }
 
 export interface RequestItemProps {

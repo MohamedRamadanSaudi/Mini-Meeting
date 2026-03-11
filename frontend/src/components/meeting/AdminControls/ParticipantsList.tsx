@@ -10,7 +10,7 @@ export const ParticipantsList: React.FC<ParticipantsListProps> = ({
 }) => {
   return (
     <div
-      className="flex-1 overflow-y-auto p-4"
+      className="participants-list flex-1 overflow-y-auto p-4"
       style={{ background: "var(--lk-bg2)" }}
     >
       <h4
