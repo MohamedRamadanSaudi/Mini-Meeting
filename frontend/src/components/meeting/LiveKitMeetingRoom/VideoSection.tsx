@@ -3,6 +3,7 @@ import { AdminPanel } from "./AdminPanel";
 import { ChatPanel } from "./ChatPanel";
 import { ControlBarSection } from "./ControlBarSection";
 import type { TrackReferenceOrPlaceholder } from "@livekit/components-react";
+import type { LobbyPendingEntry } from "../../../services/api/lobby.service";
 
 interface VideoSectionProps {
   tracks: TrackReferenceOrPlaceholder[];
@@ -18,6 +19,10 @@ interface VideoSectionProps {
   onChatClose: () => void;
   onAdminClose: () => void;
   onEndMeeting: () => void;
+  lobbyRequests: LobbyPendingEntry[];
+  lobbyRespondingTo: Set<string>;
+  onLobbyRespond: (requestId: string, action: "approve" | "reject") => void;
+  onLobbyAdmitAll: () => void;
 }
 
 export const VideoSection: React.FC<VideoSectionProps> = ({
@@ -33,6 +38,10 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
   onChatClose,
   onAdminClose,
   onEndMeeting,
+  lobbyRequests,
+  lobbyRespondingTo,
+  onLobbyRespond,
+  onLobbyAdmitAll,
 }) => (
   <div
     style={{
@@ -59,6 +68,10 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
         isOpen={isAdminPanelOpen}
         onClose={onAdminClose}
         onEndMeeting={onEndMeeting}
+        lobbyRequests={lobbyRequests}
+        lobbyRespondingTo={lobbyRespondingTo}
+        onLobbyRespond={onLobbyRespond}
+        onLobbyAdmitAll={onLobbyAdmitAll}
       />
 
       <ChatPanel isOpen={isChatOpen} onClose={onChatClose} />

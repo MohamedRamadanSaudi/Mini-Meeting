@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNotificationSound } from "./useNotificationSound";
 import { useLobbyWebSocket } from "./useLobbyWebSocket";
 import { NotificationToast } from "./NotificationToast";
@@ -8,6 +8,7 @@ import type { LobbyRequestsProps } from "./types";
 export const LobbyRequests: React.FC<LobbyRequestsProps> = ({
   meetingCode,
   isAdmin,
+  onPendingCountChange,
 }) => {
   const [respondingTo, setRespondingTo] = useState<Set<string>>(new Set());
   const [hasNewRequests, setHasNewRequests] = useState(false);
@@ -24,6 +25,10 @@ export const LobbyRequests: React.FC<LobbyRequestsProps> = ({
     isAdmin,
     handleNewRequest,
   );
+
+  useEffect(() => {
+    onPendingCountChange?.(requests.length);
+  }, [requests.length, onPendingCountChange]);
 
   const handleRespond = (requestId: string, action: "approve" | "reject") => {
     setRespondingTo((prev) => new Set(prev).add(requestId));
