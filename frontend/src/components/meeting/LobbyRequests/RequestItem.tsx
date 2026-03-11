@@ -7,7 +7,14 @@ export const RequestItem: React.FC<RequestItemProps> = ({
   onRespond,
 }) => {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 last:border-b-0 hover:bg-gray-800/50 transition-colors">
+    <div
+      className="rounded-md p-3 flex items-center justify-between gap-2"
+      style={{
+        background: "var(--lk-bg)",
+        border: "1px solid var(--lk-border-color)",
+      }}
+    >
+      {" "}
       <div className="flex items-center gap-3 min-w-0">
         {request.avatar_url ? (
           <img
@@ -27,7 +34,6 @@ export const RequestItem: React.FC<RequestItemProps> = ({
           <p className="text-gray-400 text-xs capitalize">{request.role}</p>
         </div>
       </div>
-
       <div className="flex items-center gap-2 shrink-0 ml-3">
         <button
           onClick={() => onRespond(request.request_id, "approve")}

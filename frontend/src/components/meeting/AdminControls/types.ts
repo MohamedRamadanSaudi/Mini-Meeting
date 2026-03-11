@@ -1,7 +1,13 @@
+import type { LobbyPendingEntry } from "../../../services/api/lobby.service";
+
 export interface AdminControlsProps {
   meetingCode: string;
   isAdmin: boolean;
   onEndMeeting: () => void;
+  lobbyRequests?: LobbyPendingEntry[];
+  lobbyRespondingTo?: Set<string>;
+  onLobbyRespond?: (requestId: string, action: "approve" | "reject") => void;
+  onLobbyAdmitAll?: () => void;
 }
 
 export interface ParticipantItemProps {
