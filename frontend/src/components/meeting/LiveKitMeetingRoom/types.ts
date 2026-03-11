@@ -31,6 +31,7 @@ export interface ChatButtonProps {
 export interface ControlBarSectionProps {
   meetingId?: number;
   isAdmin: boolean;
+  meetingCode: string;
   isChatOpen: boolean;
   unreadCount: number;
   onToggleChat: () => void;

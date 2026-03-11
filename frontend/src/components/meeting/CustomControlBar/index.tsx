@@ -7,6 +7,11 @@ import { ScreenShareButton } from "./ScreenShareButton";
 import { LeaveButton } from "./LeaveButton";
 import { useMeetingPreferences } from "../LiveKitMeetingRoom/useMeetingPreferences";
 
+interface CustomControlBarProps {
+  isAdmin: boolean;
+  meetingCode: string;
+}
+
 const TOGGLE_STYLE: React.CSSProperties = {
   minWidth: "48px",
   minHeight: "48px",
@@ -20,7 +25,10 @@ const TOGGLE_STYLE: React.CSSProperties = {
  * full MicrophoneControl/CameraControl which includes the device-selector
  * dropdown — this is safe because permission is already granted at that point.
  */
-export const CustomControlBar: React.FC = () => {
+export const CustomControlBar: React.FC<CustomControlBarProps> = ({
+  isAdmin,
+  meetingCode,
+}) => {
   const prefs = useMeetingPreferences();
   const isListener = prefs?.listenerMode === true;
 
@@ -66,7 +74,7 @@ export const CustomControlBar: React.FC = () => {
         )}
 
         <ScreenShareButton />
-        <LeaveButton />
+        <LeaveButton isAdmin={isAdmin} meetingCode={meetingCode} />
       </div>
     </div>
   );

@@ -80,6 +80,7 @@ export const VideoSection: React.FC<VideoSectionProps> = ({
     <ControlBarSection
       meetingId={meetingId}
       isAdmin={isAdmin}
+      meetingCode={meetingCode}
       isChatOpen={isChatOpen}
       unreadCount={unreadCount}
       onToggleChat={onToggleChat}
