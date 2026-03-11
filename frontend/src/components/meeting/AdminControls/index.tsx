@@ -153,7 +153,14 @@ export const AdminControls: React.FC<AdminControlsProps> = ({
                 return (
                   <ParticipantItem
                     key={participant.identity}
-                    participant={participant}
+                    participant={
+                      participant as unknown as {
+                        identity: string;
+                        name?: string;
+                        metadata?: string;
+                        [key: string]: unknown;
+                      }
+                    }
                     isLocal={isLocal}
                     role={role}
                     onKick={() => handleKickParticipant(participant.identity)}
