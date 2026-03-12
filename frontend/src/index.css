@@ -687,6 +687,8 @@
   .lk-focus-layout {
     display: grid !important;
     grid-template-columns: 170px 1fr !important;
+    grid-template-rows: 1fr !important;
+    height: 100% !important;
     @apply gap-2;
   }
 
