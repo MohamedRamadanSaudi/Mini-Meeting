@@ -50,7 +50,7 @@ export const CustomParticipantTile: React.FC = () => {
       }}
     >
       <ParticipantTile />
-      {/* Pin button — visible on hover, always visible when pinned, hidden for screen share */}
+      {/* Pin button — visible on hover, always visible (blue) when pinned, hidden for screen share */}
       {participant && !isScreenShare && (
         <button
           onClick={handlePinToggle}

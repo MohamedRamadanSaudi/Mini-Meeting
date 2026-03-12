@@ -113,18 +113,10 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
           <CarouselLayout tracks={otherTracks}>
             <CustomParticipantTile />
           </CarouselLayout>
-          <div className="group relative" style={{ height: "100%" }}>
+          <div className="relative" style={{ height: "100%" }}>
             <TrackRefContext.Provider value={pinnedTrack}>
               <CustomParticipantTile />
             </TrackRefContext.Provider>
-            <button
-              onClick={() => setPinnedIdentity(null)}
-              title="Unpin"
-              className="absolute top-3 right-3 z-50 flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg bg-black/60 hover:bg-black/80 text-white text-xs font-medium transition-opacity opacity-0 group-hover:opacity-100 cursor-pointer backdrop-blur-sm border border-white/20"
-            >
-              <Pin className="w-4 h-4 fill-current" />
-              Unpin
-            </button>
           </div>
         </FocusLayoutContainer>
       </PinContext.Provider>
