@@ -38,6 +38,11 @@ export function useVideoDeviceSwitching(props: UseVideoSwitchingProps) {
     const updateVideoStream = async () => {
       if (!selectedCamera || !cameraEnabled || !permissionsGranted) return;
 
+      // If the current stream is already using the selected camera, skip restart
+      const currentVideoTrack = stream?.getVideoTracks()[0];
+      const currentDeviceId = currentVideoTrack?.getSettings()?.deviceId;
+      if (currentDeviceId === selectedCamera) return;
+
       try {
         const constraints: MediaStreamConstraints = {
           video: {

@@ -38,6 +38,11 @@ export function useAudioDeviceSwitching(props: UseAudioSwitchingProps) {
     const updateAudioStream = async () => {
       if (!selectedMic || !micEnabled || !permissionsGranted) return;
 
+      // If the current stream is already using the selected mic, skip restart
+      const currentAudioTrack = stream?.getAudioTracks()[0];
+      const currentMicId = currentAudioTrack?.getSettings()?.deviceId;
+      if (currentMicId === selectedMic) return;
+
       try {
         const constraints: MediaStreamConstraints = {
           video:
