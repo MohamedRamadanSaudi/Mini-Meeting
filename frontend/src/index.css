@@ -678,6 +678,11 @@
     @apply flex-1 w-full h-full;
   }
 
+  /* Hide LiveKit's built-in expand button — we use our own custom fullscreen button */
+  .lk-focus-toggle-button {
+    display: none !important;
+  }
+
   /* Adjust focus layout container to give more space to screen share */
   .lk-focus-layout {
     display: grid !important;
