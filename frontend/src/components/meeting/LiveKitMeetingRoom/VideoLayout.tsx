@@ -8,7 +8,6 @@ import {
 } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import type { TrackReferenceOrPlaceholder } from "@livekit/components-react";
-import { Pin } from "lucide-react";
 import { CustomParticipantTile } from "../CustomParticipantTile";
 import { PinContext } from "./PinContext";
 
