@@ -1,8 +1,9 @@
 import { useMemo } from "react";
-import { useEnsureParticipant } from "@livekit/components-react";
+import { useEnsureTrackRef } from "@livekit/components-react";
 
 export const useParticipantData = () => {
-  const participant = useEnsureParticipant();
+  const trackRef = useEnsureTrackRef();
+  const participant = trackRef?.participant ?? null;
 
   const metadata = useMemo(() => {
     try {

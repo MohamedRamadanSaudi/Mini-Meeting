@@ -5,6 +5,7 @@ import {
   FocusLayoutContainer,
   CarouselLayout,
   TrackRefContext,
+  ParticipantContext,
 } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import type { TrackReferenceOrPlaceholder } from "@livekit/components-react";
@@ -101,12 +102,14 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
           {orderedTracks ? (
             <div className="lk-carousel lk-carousel-vertical">
               {orderedTracks.map((t) => (
-                <TrackRefContext.Provider
+                <ParticipantContext.Provider
                   key={`${t.participant?.identity ?? "placeholder"}-${t.source}`}
-                  value={t}
+                  value={t.participant}
                 >
-                  <CustomParticipantTile />
-                </TrackRefContext.Provider>
+                  <TrackRefContext.Provider value={t}>
+                    <CustomParticipantTile />
+                  </TrackRefContext.Provider>
+                </ParticipantContext.Provider>
               ))}
             </div>
           ) : (
@@ -141,23 +144,58 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
     );
   }
 
-  // Pinned participant layout (no screen share)
+  // Pinned participant layout (no screen share) — custom flex layout
   if (pinnedIdentity && pinnedTrack) {
     const otherTracks = tracks.filter(
       (t) => t.participant?.identity !== pinnedIdentity,
     );
     return (
       <PinContext.Provider value={pinContextValue}>
-        <FocusLayoutContainer>
-          <CarouselLayout tracks={otherTracks}>
-            <CustomParticipantTile />
-          </CarouselLayout>
-          <div className="relative" style={{ height: "100%" }}>
-            <TrackRefContext.Provider value={pinnedTrack}>
-              <CustomParticipantTile />
-            </TrackRefContext.Provider>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "100%",
+            gap: "8px",
+            padding: "8px",
+            boxSizing: "border-box",
+          }}
+        >
+          {/* Sidebar: other participants */}
+          {otherTracks.length > 0 && (
+            <div
+              style={{
+                width: "170px",
+                minWidth: "170px",
+                display: "flex",
+                flexDirection: "column",
+                overflowY: "auto",
+                gap: "8px",
+              }}
+            >
+              {otherTracks.map((t) => (
+                <div
+                  key={`${t.participant?.identity ?? "placeholder"}-${t.source}`}
+                  style={{ width: "150px", height: "150px", flexShrink: 0 }}
+                >
+                  <ParticipantContext.Provider value={t.participant}>
+                    <TrackRefContext.Provider value={t}>
+                      <CustomParticipantTile />
+                    </TrackRefContext.Provider>
+                  </ParticipantContext.Provider>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Main: pinned participant */}
+          <div style={{ flex: 1, minWidth: 0, position: "relative" }}>
+            <ParticipantContext.Provider value={pinnedTrack.participant}>
+              <TrackRefContext.Provider value={pinnedTrack}>
+                <CustomParticipantTile />
+              </TrackRefContext.Provider>
+            </ParticipantContext.Provider>
           </div>
-        </FocusLayoutContainer>
+        </div>
       </PinContext.Provider>
     );
   }
