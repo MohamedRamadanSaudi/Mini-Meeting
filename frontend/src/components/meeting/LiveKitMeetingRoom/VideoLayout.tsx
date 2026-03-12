@@ -69,12 +69,43 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
       );
     }
 
+    // CarouselLayout uses useVisualStableUpdate internally and ignores order.
+    // When pinned, render all tiles manually so the pinned one stays first.
+    const pinnedCarouselTrack = pinnedIdentity
+      ? (tracks.find(
+          (t) =>
+            t.participant?.identity === pinnedIdentity &&
+            t.source === Track.Source.Camera,
+        ) ?? tracks.find((t) => t.participant?.identity === pinnedIdentity))
+      : null;
+
+    const unpinnedTracks = pinnedIdentity
+      ? tracks.filter((t) => t.participant?.identity !== pinnedIdentity)
+      : tracks;
+
+    const orderedTracks = pinnedCarouselTrack
+      ? [pinnedCarouselTrack, ...unpinnedTracks]
+      : null;
+
     return (
       <PinContext.Provider value={pinContextValue}>
         <FocusLayoutContainer>
-          <CarouselLayout tracks={tracks}>
-            <CustomParticipantTile />
-          </CarouselLayout>
+          {orderedTracks ? (
+            <div className="lk-carousel lk-carousel-vertical">
+              {orderedTracks.map((t) => (
+                <TrackRefContext.Provider
+                  key={`${t.participant?.identity ?? "placeholder"}-${t.source}`}
+                  value={t}
+                >
+                  <CustomParticipantTile />
+                </TrackRefContext.Provider>
+              ))}
+            </div>
+          ) : (
+            <CarouselLayout tracks={tracks}>
+              <CustomParticipantTile />
+            </CarouselLayout>
+          )}
           <div className="group relative flex-1 min-w-0 min-h-0">
             <FocusLayout trackRef={screenTrack} />
             <button
