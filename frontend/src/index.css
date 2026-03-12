@@ -663,7 +663,8 @@
   }
 
   /* Make all carousel items (participants) the same size when screen sharing */
-  .lk-focus-layout .lk-carousel > * {
+  .lk-focus-layout .lk-carousel > *,
+  .lk-focus-layout .lk-carousel-vertical > * {
     @apply w-37.5 h-37.5 min-w-37.5 min-h-37.5 max-w-37.5 max-h-37.5 shrink-0;
     aspect-ratio: auto !important;
   }
@@ -673,15 +674,27 @@
     @apply flex-col overflow-y-auto overflow-x-hidden gap-2 p-2 max-h-full;
   }
 
+  /* Manual ordered carousel (used when a participant is pinned) */
+  .lk-focus-layout .lk-carousel-vertical {
+    @apply flex flex-col overflow-y-auto overflow-x-hidden gap-2 p-2 max-h-full;
+  }
+
   /* Keep the focused track (screen share) large */
   .lk-focus-layout .lk-focused-participant {
     @apply flex-1 w-full h-full;
+  }
+
+  /* Hide LiveKit's built-in expand button — we use our own custom fullscreen button */
+  .lk-focus-toggle-button {
+    display: none !important;
   }
 
   /* Adjust focus layout container to give more space to screen share */
   .lk-focus-layout {
     display: grid !important;
     grid-template-columns: 170px 1fr !important;
+    grid-template-rows: 1fr !important;
+    height: 100% !important;
     @apply gap-2;
   }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import MediaControls from "../../components/meeting/MediaControls";
 import type { VideoPreviewProps } from "./types";
 
@@ -10,6 +10,14 @@ export const VideoPreview: React.FC<VideoPreviewProps> = ({
   onToggleMic,
   onToggleCamera,
 }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream ?? null;
+    }
+  }, [stream]);
+
   return (
     <div
       className="relative aspect-video bg-black"
@@ -18,9 +26,7 @@ export const VideoPreview: React.FC<VideoPreviewProps> = ({
     >
       {cameraEnabled && stream ? (
         <video
-          ref={(video) => {
-            if (video) video.srcObject = stream;
-          }}
+          ref={videoRef}
           autoPlay
           playsInline
           muted
