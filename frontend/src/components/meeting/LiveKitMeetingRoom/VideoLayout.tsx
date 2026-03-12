@@ -79,12 +79,21 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
       : null;
 
     const unpinnedTracks = pinnedIdentity
-      ? tracks.filter((t) => t.participant?.identity !== pinnedIdentity)
-      : tracks;
+      ? tracks.filter(
+          (t) =>
+            t.participant?.identity !== pinnedIdentity &&
+            t.source !== Track.Source.ScreenShare,
+        )
+      : tracks.filter((t) => t.source !== Track.Source.ScreenShare);
 
     const orderedTracks = pinnedCarouselTrack
       ? [pinnedCarouselTrack, ...unpinnedTracks]
       : null;
+
+    // Non-pinned case: also filter screen share from carousel
+    const carouselTracks = tracks.filter(
+      (t) => t.source !== Track.Source.ScreenShare,
+    );
 
     return (
       <PinContext.Provider value={pinContextValue}>
@@ -101,7 +110,7 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
               ))}
             </div>
           ) : (
-            <CarouselLayout tracks={tracks}>
+            <CarouselLayout tracks={carouselTracks}>
               <CustomParticipantTile />
             </CarouselLayout>
           )}
