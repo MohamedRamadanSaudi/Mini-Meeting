@@ -7,6 +7,7 @@ import { JoinMeetingInput } from "../../components/meeting/JoinMeetingInput";
 import { meetingService } from "../../services/api/meeting.service";
 import { WelcomeSection } from "./WelcomeSection";
 import { DashboardActions } from "./DashboardActions";
+import { RecentSessions } from "./RecentSessions";
 
 /**
  * Dashboard page
@@ -49,6 +50,9 @@ export default function Dashboard() {
             <JoinMeetingInput showExamples={false} />
           </div>
         </div>
+
+        {/* Recent Sessions Section */}
+        <RecentSessions />
       </div>
 
       {/* Create Meeting Modal */}
